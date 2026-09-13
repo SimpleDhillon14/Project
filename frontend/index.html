@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chemical Reaction Kinetics Analyzer</title>
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <h1>Chemical Reaction Kinetics Analyzer</h1>
+    <p class="subtitle">Transparent Integral &amp; Differential Method Kinetics — University Project</p>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- METHOD SELECTION -->
+  <section class="card">
+    <h2>1. Select Analysis Method</h2>
+    <label for="method-select">Method</label>
+    <select id="method-select">
+      <option value="integral">Integral Method</option>
+      <option value="differential">Differential Method</option>
+      <option value="autocatalytic">Autocatalytic Reaction (A + B → 2B)</option>
+      <option value="reversible">Reversible Reaction (A ⇌ B)</option>
+      <option value="irreversible">Irreversible Reaction (-r_A = kC_A^n)</option>
+    </select>
+
+    <div id="method-description" class="method-description"></div>
+  </section>
+
+  <!-- DATA INPUT -->
+  <section class="card">
+    <h2>2. Enter Experimental Data</h2>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="manual">Manual Input</button>
+      <button class="tab-btn" data-tab="csv">CSV Upload</button>
+    </div>
+
+    <div id="tab-manual" class="tab-content active">
+      <table id="data-table">
+        <thead id="data-table-head"></thead>
+        <tbody id="data-table-body"></tbody>
+      </table>
+      <div class="table-actions">
+        <button id="add-row-btn" class="btn secondary">+ Add Row</button>
+        <button id="clear-rows-btn" class="btn secondary">Clear All</button>
+      </div>
+    </div>
+
+    <div id="tab-csv" class="tab-content">
+      <p class="hint">
+        CSV must have a header row. For Integral / Differential / Irreversible / Reversible:
+        columns <code>Time,Concentration</code>. For Autocatalytic:
+        columns <code>Time,ConcentrationA,ConcentrationB</code>.
+      </p>
+      <input type="file" id="csv-input" accept=".csv" />
+      <div id="csv-status" class="hint"></div>
+    </div>
+
+    <div id="irreversible-mode-wrapper" class="hidden extra-field">
+      <label for="irreversible-mode">Irreversible analysis mode</label>
+      <select id="irreversible-mode">
+        <option value="integral">Integral Method (test all orders)</option>
+        <option value="differential">Differential Method (log-log)</option>
+      </select>
+    </div>
+
+    <div id="reversible-extra" class="hidden extra-field-group">
+      <div class="extra-field">
+        <label for="rev-ca0">Initial concentration C_A0 (optional, defaults to first row)</label>
+        <input type="number" id="rev-ca0" step="any" placeholder="e.g. 10" />
+      </div>
+      <div class="extra-field">
+        <label for="rev-cae">Equilibrium concentration C_Ae (optional, defaults to last row)</label>
+        <input type="number" id="rev-cae" step="any" placeholder="e.g. 6.4" />
+      </div>
+    </div>
+
+    <div id="error-box" class="error-box hidden"></div>
+
+    <button id="analyze-btn" class="btn primary">Analyze</button>
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div> Running regression analysis...
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="hidden"></section>
+
+</main>
+
+<footer class="footer">
+  <p>Chemical Reaction Kinetics Analyzer — Chemical Reaction Engineering university project.</p>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
